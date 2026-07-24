@@ -7,13 +7,20 @@ import {
   Text,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function HomeScreen() {
+  const insets = useSafeAreaInsets();
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView
-        contentContainerStyle={styles.container}
+        contentContainerStyle={[
+          styles.container,
+          {
+            paddingBottom: insets.bottom + 32,
+          },
+        ]}
         showsVerticalScrollIndicator={false}
       >
         {/* Kopfbereich */}
@@ -147,7 +154,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingHorizontal: 20,
     paddingTop: 18,
-    paddingBottom: 32,
+  
   },
 
   header: {

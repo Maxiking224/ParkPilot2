@@ -34,7 +34,19 @@ export default function Layout() {
           ),
         }}
       />
-
+      <Tabs.Screen
+        name="offer"
+        options={{
+          title: 'Anbieten',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons
+              name="car"
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
       <Tabs.Screen
         name="explore"
         options={{

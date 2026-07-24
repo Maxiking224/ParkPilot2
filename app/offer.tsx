@@ -1,24 +1,30 @@
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker, {
-    DateTimePickerEvent,
+  DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
 import { useState } from 'react';
 import {
-    Alert,
-    Platform,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  Alert,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+import * as Location from 'expo-location';
+import { router } from 'expo-router';
+
+import { useParkingOffers } from '@/context/ParkingOffersContext';
 
 type PickerTarget = 'start' | 'end';
 type PickerMode = 'date' | 'time';
 
 export default function OfferScreen() {
+  const { addOffer } = useParkingOffers();
   const [address, setAddress] = useState('');
 
   const [availableFrom, setAvailableFrom] = useState(new Date());
@@ -74,59 +80,98 @@ export default function OfferScreen() {
     }
   }
 
-  function publishOffer() {
-    const cleanedAddress = address.trim();
+  async function publishOffer() {
+  const cleanedAddress = address.trim();
 
-    if (!cleanedAddress) {
+  if (!cleanedAddress) {
+    Alert.alert(
+      'Adresse fehlt',
+      'Bitte gib eine Adresse für den Parkplatz ein.'
+    );
+    return;
+  }
+
+  if (expiresAt <= availableFrom) {
+    Alert.alert(
+      'Zeitraum ungültig',
+      'Das Ende muss nach dem Beginn liegen.'
+    );
+    return;
+  }
+
+  const minimumDurationMilliseconds =
+    5 * 60 * 1000;
+
+  if (
+    expiresAt.getTime() -
+      availableFrom.getTime() <
+    minimumDurationMilliseconds
+  ) {
+    Alert.alert(
+      'Zeitraum zu kurz',
+      'Der Parkplatz muss mindestens fünf Minuten verfügbar sein.'
+    );
+    return;
+  }
+
+  try {
+    const permission =
+      await Location.requestForegroundPermissionsAsync();
+
+    if (permission.status !== 'granted') {
       Alert.alert(
-        'Adresse fehlt',
-        'Bitte gib eine Adresse für den Parkplatz ein.'
+        'Standort nicht erlaubt',
+        'Der Standort wird benötigt, damit der Parkplatz auf der Karte angezeigt werden kann.'
       );
       return;
     }
 
-    if (expiresAt <= availableFrom) {
-      Alert.alert(
-        'Zeitraum ungültig',
-        'Das Ende muss nach dem Beginn liegen.'
-      );
-      return;
-    }
+    const currentLocation =
+      await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.High,
+      });
 
-    const minimumDurationMilliseconds =
-      5 * 60 * 1000;
-
-    if (
-      expiresAt.getTime() -
-        availableFrom.getTime() <
-      minimumDurationMilliseconds
-    ) {
-      Alert.alert(
-        'Zeitraum zu kurz',
-        'Der Parkplatz muss mindestens fünf Minuten verfügbar sein.'
-      );
-      return;
-    }
-
-    const offer = {
-      id: Date.now().toString(),
+    const offer = addOffer({
       address: cleanedAddress,
-      availableFrom: availableFrom.toISOString(),
-      expiresAt: expiresAt.toISOString(),
-      createdAt: new Date().toISOString(),
-      status:
-        availableFrom.getTime() > Date.now()
-          ? 'scheduled'
-          : 'active',
-    };
 
-    console.log('Neues Parkplatzangebot:', offer);
+      latitude:
+        currentLocation.coords.latitude,
+      longitude:
+        currentLocation.coords.longitude,
+
+      availableFrom:
+        availableFrom.toISOString(),
+      expiresAt: expiresAt.toISOString(),
+    });
+
+    console.log(
+      'Neues Parkplatzangebot:',
+      offer
+    );
 
     Alert.alert(
       'Parkplatz veröffentlicht',
-      'Dein Parkplatzangebot wurde erfolgreich erstellt.'
+      'Dein Parkplatz wird jetzt auf der Karte angezeigt.',
+      [
+        {
+          text: 'Zur Karte',
+          onPress: () =>
+            router.push('/explore'),
+        },
+      ]
+    );
+  } catch (error) {
+    console.error(
+      'Parkplatz konnte nicht veröffentlicht werden:',
+      error
+    );
+
+    Alert.alert(
+      'Fehler',
+      'Der Standort konnte nicht ermittelt werden.'
     );
   }
+}
 
   const selectedPickerValue =
     pickerTarget === 'end'

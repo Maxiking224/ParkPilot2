@@ -16,6 +16,8 @@ import MapView, {
 } from 'react-native-maps';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useParkingOffers } from '@/context/ParkingOffersContext';
+
 type UserPosition = {
   latitude: number;
   longitude: number;
@@ -29,6 +31,8 @@ const DEFAULT_REGION: Region = {
 };
 
 export default function ExploreScreen() {
+  const { offers } = useParkingOffers();
+
   const mapRef = useRef<MapView>(null);
 
   const [userPosition, setUserPosition] =
@@ -64,16 +68,18 @@ export default function ExploreScreen() {
           accuracy: Location.Accuracy.High,
         });
 
-      const position = {
+      const position: UserPosition = {
         latitude: currentLocation.coords.latitude,
         longitude: currentLocation.coords.longitude,
       };
 
       setUserPosition(position);
-
       moveMapToPosition(position);
     } catch (error) {
-      console.error('Standort konnte nicht geladen werden:', error);
+      console.error(
+        'Standort konnte nicht geladen werden:',
+        error
+      );
 
       setLocationError(
         'Dein Standort konnte nicht ermittelt werden. Prüfe bitte, ob GPS aktiviert ist.'
@@ -83,7 +89,9 @@ export default function ExploreScreen() {
     }
   }
 
-  function moveMapToPosition(position: UserPosition) {
+  function moveMapToPosition(
+    position: UserPosition
+  ) {
     mapRef.current?.animateToRegion(
       {
         latitude: position.latitude,
@@ -107,7 +115,8 @@ export default function ExploreScreen() {
   function handleUserLocationChange(
     event: UserLocationChangeEvent
   ) {
-    const coordinates = event.nativeEvent.coordinate;
+    const coordinates =
+      event.nativeEvent.coordinate;
 
     if (!coordinates) {
       return;
@@ -117,6 +126,15 @@ export default function ExploreScreen() {
       latitude: coordinates.latitude,
       longitude: coordinates.longitude,
     });
+  }
+
+  function formatOfferTime(isoDate: string) {
+    return new Intl.DateTimeFormat('de-DE', {
+      day: '2-digit',
+      month: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).format(new Date(isoDate));
   }
 
   return (
@@ -131,19 +149,74 @@ export default function ExploreScreen() {
           showsCompass={false}
           showsScale={false}
           toolbarEnabled={false}
-          onUserLocationChange={handleUserLocationChange}
+          onUserLocationChange={
+            handleUserLocationChange
+          }
         >
+          {/* Eigener Standort */}
           {userPosition && (
             <Marker
               coordinate={userPosition}
               title="Dein Standort"
               description="Du befindest dich hier"
+              zIndex={1}
             >
               <View style={styles.userMarkerOuter}>
-                <View style={styles.userMarkerInner} />
+                <View
+                  style={styles.userMarkerInner}
+                />
               </View>
             </Marker>
           )}
+
+          {/* Parkplatzangebote */}
+          {offers.map((offer) => {
+            const isScheduled =
+              offer.status === 'scheduled';
+
+            const markerTitle = isScheduled
+              ? 'Bald verfügbar'
+              : 'Freier Parkplatz';
+
+            const markerDescription =
+              `${offer.address}\n` +
+              `Von ${formatOfferTime(
+                offer.availableFrom
+              )} bis ${formatOfferTime(
+                offer.expiresAt
+              )}`;
+
+            return (
+              <Marker
+                key={offer.id}
+                coordinate={{
+                  latitude: offer.latitude,
+                  longitude: offer.longitude,
+                }}
+                title={markerTitle}
+                description={markerDescription}
+                zIndex={10}
+              >
+                <View
+                  style={[
+                    styles.parkingMarker,
+                    isScheduled &&
+                      styles.scheduledParkingMarker,
+                  ]}
+                >
+                  <Ionicons
+                    name={
+                      isScheduled
+                        ? 'time'
+                        : 'car-sport'
+                    }
+                    size={21}
+                    color="#FFFFFF"
+                  />
+                </View>
+              </Marker>
+            );
+          })}
         </MapView>
 
         {/* Oberer Bereich */}
@@ -163,12 +236,17 @@ export default function ExploreScreen() {
           </Pressable>
 
           <View style={styles.titleCard}>
-            <Text style={styles.title}>Parkplätze</Text>
+            <Text style={styles.title}>
+              Parkplätze
+            </Text>
 
             <View style={styles.liveRow}>
               <View style={styles.liveDot} />
+
               <Text style={styles.liveText}>
-                Standort aktiv
+                {offers.length === 1
+                  ? '1 Angebot verfügbar'
+                  : `${offers.length} Angebote verfügbar`}
               </Text>
             </View>
           </View>
@@ -182,7 +260,11 @@ export default function ExploreScreen() {
               color="#276EF1"
             />
 
-            <View style={styles.loadingTextContainer}>
+            <View
+              style={
+                styles.loadingTextContainer
+              }
+            >
               <Text style={styles.loadingTitle}>
                 Standort wird gesucht
               </Text>
@@ -218,7 +300,11 @@ export default function ExploreScreen() {
                 style={styles.retryButton}
                 onPress={loadCurrentLocation}
               >
-                <Text style={styles.retryButtonText}>
+                <Text
+                  style={
+                    styles.retryButtonText
+                  }
+                >
                   Erneut versuchen
                 </Text>
               </Pressable>
@@ -253,16 +339,16 @@ export default function ExploreScreen() {
 
           <View style={styles.bottomCardContent}>
             <Text style={styles.bottomCardLabel}>
-              DEIN STANDORT
+              PARKPLATZKARTE
             </Text>
 
             <Text style={styles.bottomCardTitle}>
-              Aktuelle Position
+              Verfügbare Parkplätze
             </Text>
 
             <Text style={styles.bottomCardText}>
-              Die Karte folgt deinem Standort und zeigt
-              deine aktuelle Position.
+              Blaue Marker sind aktuell verfügbar.
+              Graue Marker werden erst später frei.
             </Text>
           </View>
         </View>
@@ -557,7 +643,8 @@ const styles = StyleSheet.create({
     borderRadius: 17,
     borderWidth: 3,
     borderColor: '#FFFFFF',
-    backgroundColor: 'rgba(39, 110, 241, 0.25)',
+    backgroundColor:
+      'rgba(39, 110, 241, 0.25)',
   },
 
   userMarkerInner: {
@@ -565,5 +652,30 @@ const styles = StyleSheet.create({
     height: 15,
     borderRadius: 8,
     backgroundColor: '#276EF1',
+  },
+
+  parkingMarker: {
+    width: 46,
+    height: 46,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 23,
+    borderWidth: 3,
+    borderColor: '#FFFFFF',
+    backgroundColor: '#276EF1',
+
+    shadowColor: '#102A43',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.28,
+    shadowRadius: 8,
+
+    elevation: 8,
+  },
+
+  scheduledParkingMarker: {
+    backgroundColor: '#64748B',
   },
 });

@@ -2,15 +2,18 @@ import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { ParkingOffersProvider } from '@/context/ParkingOffersContext';
+
 export default function Layout() {
   const insets = useSafeAreaInsets();
 
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: '#276EF1',
-        tabBarInactiveTintColor: '#94A3B8',
+    <ParkingOffersProvider>
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+          tabBarActiveTintColor: '#276EF1',
+          tabBarInactiveTintColor: '#94A3B8',
 
         tabBarStyle: {
           height: 66 + insets.bottom,
@@ -68,5 +71,6 @@ export default function Layout() {
         }}
       />
     </Tabs>
+  </ParkingOffersProvider>
   );
 }

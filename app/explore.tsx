@@ -153,21 +153,6 @@ export default function ExploreScreen() {
             handleUserLocationChange
           }
         >
-          {/* Eigener Standort */}
-          {userPosition && (
-            <Marker
-              coordinate={userPosition}
-              title="Dein Standort"
-              description="Du befindest dich hier"
-              zIndex={1}
-            >
-              <View style={styles.userMarkerOuter}>
-                <View
-                  style={styles.userMarkerInner}
-                />
-              </View>
-            </Marker>
-          )}
 
           {/* Parkplatzangebote */}
           {offers.map((offer) => {
@@ -187,32 +172,17 @@ export default function ExploreScreen() {
               )}`;
 
             return (
-              <Marker
-                key={offer.id}
-                coordinate={{
-                  latitude: offer.latitude,
-                  longitude: offer.longitude,
-                }}
-                title={markerTitle}
-                description={markerDescription}
-                zIndex={10}
-              >
-                <View style={styles.parkingMarkerWrapper}>
-                  <View
-                     style={[
-                      styles.parkingMarker,
-                      isScheduled &&
-                        styles.scheduledParkingMarker,
-                  ]}
-                >
-                  <Ionicons
-                    name={isScheduled ? 'time' : 'car-sport'}
-                    size={21}
-                    color="#FFFFFF"
-                  />
-                </View>
-              </View>
-              </Marker>
+             <Marker
+              key={offer.id}
+              coordinate={{
+                latitude: offer.latitude,
+                longitude: offer.longitude,
+              }}
+              title={markerTitle}
+              description={markerDescription}
+              pinColor={isScheduled ? '#64748B' : '#276EF1'}
+              zIndex={10}
+            />
             );
           })}
         </MapView>
@@ -579,45 +549,5 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 
-  userMarkerOuter: {
-    width: 34,
-    height: 34,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 17,
-    borderWidth: 3,
-    borderColor: '#FFFFFF',
-    backgroundColor:
-      'rgba(39, 110, 241, 0.25)',
-  },
-
-  userMarkerInner: {
-    width: 15,
-    height: 15,
-    borderRadius: 8,
-    backgroundColor: '#276EF1',
-  },
-
-  parkingMarkerWrapper: {
-    width: 72,
-    height: 72,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  parkingMarker: {
-    width: 46,
-    height: 46,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 23,
-    borderWidth: 3,
-    borderColor: '#FFFFFF',
-    backgroundColor: '#276EF1',
-    elevation: 4,
-  },
-
-    scheduledParkingMarker: {
-      backgroundColor: '#64748B',
-    },
+  
 });

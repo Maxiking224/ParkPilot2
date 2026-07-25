@@ -17,19 +17,27 @@ import MapView, {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useParkingOffers } from '@/context/ParkingOffersContext';
-
+// Typdefinition für die Position des Benutzers
 type UserPosition = {
   latitude: number;
   longitude: number;
 };
+ // Marker-Bilder
+const ACTIVE_PARKING_MARKER = require(
+  '@/assets/markers/parking-active.png'
+);
 
+const SCHEDULED_PARKING_MARKER = require(
+  '@/assets/markers/parking-scheduled.png'
+);
+// Standardregion (Berlin)
 const DEFAULT_REGION: Region = {
   latitude: 52.52,
   longitude: 13.405,
   latitudeDelta: 0.04,
   longitudeDelta: 0.04,
 };
-
+// Hauptkomponente
 export default function ExploreScreen() {
   const { offers } = useParkingOffers();
 
@@ -180,7 +188,15 @@ export default function ExploreScreen() {
               }}
               title={markerTitle}
               description={markerDescription}
-              pinColor={isScheduled ? '#64748B' : '#276EF1'}
+              image={
+                isScheduled
+                  ? SCHEDULED_PARKING_MARKER
+                  : ACTIVE_PARKING_MARKER
+              }
+              anchor={{
+                x: 0.5,
+                y: 0.5,
+              }}
               zIndex={10}
             />
             );

@@ -10,67 +10,56 @@ export default function Layout() {
   return (
     <ParkingOffersProvider>
       <Tabs
+        initialRouteName="explore"
         screenOptions={{
           headerShown: false,
-          tabBarActiveTintColor: '#276EF1',
-          tabBarInactiveTintColor: '#94A3B8',
+          tabBarActiveTintColor: '#FF3D78',
+          tabBarInactiveTintColor: '#B0ACA7',
 
-        tabBarStyle: {
-          height: 66 + insets.bottom,
-          paddingTop: 7,
-          paddingBottom: Math.max(insets.bottom, 9),
-          backgroundColor: '#FFFFFF',
-          borderTopColor: '#E7EDF3',
-        },
+          tabBarStyle: {
+            height: 66 + insets.bottom,
+            paddingTop: 7,
+            paddingBottom: Math.max(insets.bottom, 9),
+            backgroundColor: '#FFFFFF',
+            borderTopColor: '#ECEAE6',
+          },
 
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: '700',
-        },
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Start',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons
-              name="home-outline"
-              size={size}
-              color={color}
-            />
-          ),
+          tabBarLabelStyle: {
+            fontSize: 12,
+            fontWeight: '700',
+          },
         }}
-      />
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: 'Start',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="home-outline" size={size} color={color} />
+            ),
+          }}
+        />
 
-      <Tabs.Screen
-        name="offer"
-        options={{
-          title: 'Anbieten',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons
-              name="car"
-              size={size}
-              color={color}
-            />
-          ),
-        }}
-      />
+        <Tabs.Screen
+          name="offer"
+          options={{
+            title: 'Anbieten',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="car" size={size} color={color} />
+            ),
+          }}
+        />
 
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Karte',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons
-              name="map-outline"
-              size={size}
-              color={color}
-            />
-          ),
-        }}
-      />
-    </Tabs>
-  </ParkingOffersProvider>
+        <Tabs.Screen
+          name="explore"
+          options={{
+            title: 'Karte',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="map-outline" size={size} color={color} />
+            ),
+          }}
+        />
+      </Tabs>
+    </ParkingOffersProvider>
   );
 }

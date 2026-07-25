@@ -34,7 +34,7 @@ export default function HomeScreen() {
             <Ionicons
               name="person-outline"
               size={22}
-              color="#17324D"
+              color="#201D1C"
             />
           </View>
         </View>
@@ -48,7 +48,7 @@ export default function HomeScreen() {
             <Ionicons
               name="car-sport"
               size={30}
-              color="#FFFFFF"
+              color="#E62E67"
             />
           </View>
 
@@ -73,7 +73,7 @@ export default function HomeScreen() {
               <Ionicons
                 name="navigate"
                 size={20}
-                color="#17324D"
+                color="#E62E67"
               />
 
               <Text style={styles.primaryButtonText}>
@@ -83,7 +83,7 @@ export default function HomeScreen() {
               <Ionicons
                 name="arrow-forward"
                 size={20}
-                color="#17324D"
+                color="#E62E67"
               />
             </Pressable>
           </Link>
@@ -94,11 +94,11 @@ export default function HomeScreen() {
 
         <View style={styles.statsRow}>
           <View style={styles.statCard}>
-            <View style={[styles.statIcon, styles.greenIcon]}>
+            <View style={[styles.statIcon, styles.pinkIcon]}>
               <Ionicons
                 name="time-outline"
                 size={22}
-                color="#198754"
+                color="#E62E67"
               />
             </View>
 
@@ -107,11 +107,11 @@ export default function HomeScreen() {
           </View>
 
           <View style={styles.statCard}>
-            <View style={[styles.statIcon, styles.blueIcon]}>
+            <View style={[styles.statIcon, styles.neutralIcon]}>
               <Ionicons
                 name="location-outline"
                 size={22}
-                color="#276EF1"
+                color="#201D1C"
               />
             </View>
 
@@ -147,14 +147,13 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F4F7FA',
+    backgroundColor: '#F7F6F4',
   },
 
   container: {
     flexGrow: 1,
     paddingHorizontal: 20,
     paddingTop: 18,
-  
   },
 
   header: {
@@ -165,7 +164,7 @@ const styles = StyleSheet.create({
   },
 
   eyebrow: {
-    color: '#64748B',
+    color: '#8C8985',
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 1.5,
@@ -173,7 +172,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    color: '#102A43',
+    color: '#201D1C',
     fontSize: 27,
     fontWeight: '800',
     letterSpacing: -0.6,
@@ -187,12 +186,12 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     backgroundColor: '#FFFFFF',
 
-    shadowColor: '#102A43',
+    shadowColor: '#201D1C',
     shadowOffset: {
       width: 0,
       height: 5,
     },
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.06,
     shadowRadius: 12,
 
     elevation: 3,
@@ -204,14 +203,14 @@ const styles = StyleSheet.create({
     minHeight: 330,
     padding: 24,
     borderRadius: 30,
-    backgroundColor: '#17324D',
+    backgroundColor: '#E62E67',
 
-    shadowColor: '#102A43',
+    shadowColor: '#E62E67',
     shadowOffset: {
       width: 0,
       height: 12,
     },
-    shadowOpacity: 0.18,
+    shadowOpacity: 0.25,
     shadowRadius: 22,
 
     elevation: 8,
@@ -224,7 +223,7 @@ const styles = StyleSheet.create({
     width: 210,
     height: 210,
     borderRadius: 105,
-    backgroundColor: 'rgba(68, 211, 180, 0.14)',
+    backgroundColor: 'rgba(255, 255, 255, 0.14)',
   },
 
   heroDecorationSmall: {
@@ -234,7 +233,7 @@ const styles = StyleSheet.create({
     width: 92,
     height: 92,
     borderRadius: 46,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
   },
 
   heroIcon: {
@@ -244,11 +243,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 19,
     marginBottom: 24,
-    backgroundColor: '#276EF1',
+    backgroundColor: '#FFFFFF',
   },
 
   heroLabel: {
-    color: '#44D3B4',
+    color: '#FFD9E6',
     fontSize: 12,
     fontWeight: '800',
     letterSpacing: 2,
@@ -266,7 +265,7 @@ const styles = StyleSheet.create({
 
   heroText: {
     maxWidth: 305,
-    color: '#C7D5E0',
+    color: 'rgba(255,255,255,0.82)',
     fontSize: 15,
     lineHeight: 22,
     marginTop: 12,
@@ -280,7 +279,7 @@ const styles = StyleSheet.create({
     minHeight: 56,
     paddingHorizontal: 18,
     borderRadius: 18,
-    backgroundColor: '#44D3B4',
+    backgroundColor: '#FFFFFF',
   },
 
   buttonPressed: {
@@ -290,14 +289,14 @@ const styles = StyleSheet.create({
 
   primaryButtonText: {
     flex: 1,
-    color: '#17324D',
+    color: '#E62E67',
     fontSize: 16,
     fontWeight: '800',
     marginLeft: 11,
   },
 
   sectionTitle: {
-    color: '#17324D',
+    color: '#201D1C',
     fontSize: 19,
     fontWeight: '800',
     marginTop: 28,
@@ -315,12 +314,12 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     backgroundColor: '#FFFFFF',
 
-    shadowColor: '#102A43',
+    shadowColor: '#201D1C',
     shadowOffset: {
       width: 0,
       height: 5,
     },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.05,
     shadowRadius: 12,
 
     elevation: 2,
@@ -335,23 +334,23 @@ const styles = StyleSheet.create({
     marginBottom: 18,
   },
 
-  greenIcon: {
-    backgroundColor: '#E8F8F0',
+  pinkIcon: {
+    backgroundColor: '#FFE1EC',
   },
 
-  blueIcon: {
-    backgroundColor: '#EAF1FF',
+  neutralIcon: {
+    backgroundColor: '#F3F1EE',
   },
 
   statValue: {
-    color: '#17324D',
+    color: '#201D1C',
     fontSize: 21,
     fontWeight: '800',
     marginBottom: 3,
   },
 
   statLabel: {
-    color: '#718096',
+    color: '#8C8985',
     fontSize: 13,
     fontWeight: '600',
   },
@@ -363,7 +362,7 @@ const styles = StyleSheet.create({
     marginTop: 14,
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#E7EDF3',
+    borderColor: '#ECEAE6',
   },
 
   tipIcon: {
@@ -381,14 +380,14 @@ const styles = StyleSheet.create({
   },
 
   tipTitle: {
-    color: '#17324D',
+    color: '#201D1C',
     fontSize: 15,
     fontWeight: '800',
     marginBottom: 5,
   },
 
   tipText: {
-    color: '#64748B',
+    color: '#8C8985',
     fontSize: 13,
     lineHeight: 19,
   },

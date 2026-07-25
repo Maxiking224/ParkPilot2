@@ -599,8 +599,8 @@ const styles = StyleSheet.create({
   },
 
   parkingMarkerWrapper: {
-    width: 64,
-    height: 64,
+    width: 72,
+    height: 72,
     alignItems: 'center',
     justifyContent: 'center',
   },

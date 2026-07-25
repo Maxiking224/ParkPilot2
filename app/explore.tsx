@@ -24,11 +24,11 @@ type UserPosition = {
 };
  // Marker-Bilder
 const ACTIVE_PARKING_MARKER = require(
-  '@/assets/markers/parking-active.png'
+  '../assets/images/markers/parking-active.png'
 );
 
 const SCHEDULED_PARKING_MARKER = require(
-  '@/assets/markers/parking-scheduled.png'
+  '../assets/images/markers/parking-scheduled.png'
 );
 // Standardregion (Berlin)
 const DEFAULT_REGION: Region = {
@@ -195,7 +195,7 @@ export default function ExploreScreen() {
               }
               anchor={{
                 x: 0.5,
-                y: 0.5,
+                y: 1,
               }}
               zIndex={10}
             />

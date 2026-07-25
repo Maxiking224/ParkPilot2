@@ -197,23 +197,21 @@ export default function ExploreScreen() {
                 description={markerDescription}
                 zIndex={10}
               >
-                <View
-                  style={[
-                    styles.parkingMarker,
-                    isScheduled &&
-                      styles.scheduledParkingMarker,
+                <View style={styles.parkingMarkerWrapper}>
+                  <View
+                     style={[
+                      styles.parkingMarker,
+                      isScheduled &&
+                        styles.scheduledParkingMarker,
                   ]}
                 >
                   <Ionicons
-                    name={
-                      isScheduled
-                        ? 'time'
-                        : 'car-sport'
-                    }
+                    name={isScheduled ? 'time' : 'car-sport'}
                     size={21}
                     color="#FFFFFF"
                   />
                 </View>
+              </View>
               </Marker>
             );
           })}
@@ -388,15 +386,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 17,
     backgroundColor: '#FFFFFF',
-
-    shadowColor: '#102A43',
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.14,
-    shadowRadius: 12,
-
     elevation: 5,
   },
 
@@ -407,15 +396,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     borderRadius: 19,
     backgroundColor: '#FFFFFF',
-
-    shadowColor: '#102A43',
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.12,
-    shadowRadius: 12,
-
     elevation: 5,
   },
 
@@ -455,15 +435,6 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 18,
     backgroundColor: '#FFFFFF',
-
-    shadowColor: '#102A43',
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-
     elevation: 4,
   },
 
@@ -494,15 +465,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#FECACA',
     backgroundColor: '#FFFFFF',
-
-    shadowColor: '#102A43',
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-
     elevation: 4,
   },
 
@@ -558,15 +520,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 20,
     backgroundColor: '#FFFFFF',
-
-    shadowColor: '#102A43',
-    shadowOffset: {
-      width: 0,
-      height: 6,
-    },
-    shadowOpacity: 0.18,
-    shadowRadius: 14,
-
     elevation: 7,
   },
 
@@ -588,15 +541,6 @@ const styles = StyleSheet.create({
     padding: 19,
     borderRadius: 24,
     backgroundColor: '#17324D',
-
-    shadowColor: '#102A43',
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.24,
-    shadowRadius: 20,
-
     elevation: 9,
   },
 
@@ -654,6 +598,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#276EF1',
   },
 
+  parkingMarkerWrapper: {
+    width: 72,
+    height: 72,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   parkingMarker: {
     width: 46,
     height: 46,
@@ -663,19 +614,10 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: '#FFFFFF',
     backgroundColor: '#276EF1',
+    elevation: 4,
+  },
 
-    shadowColor: '#102A43',
-    shadowOffset: {
-      width: 0,
-      height: 5,
+    scheduledParkingMarker: {
+      backgroundColor: '#64748B',
     },
-    shadowOpacity: 0.28,
-    shadowRadius: 8,
-
-    elevation: 8,
-  },
-
-  scheduledParkingMarker: {
-    backgroundColor: '#64748B',
-  },
 });
